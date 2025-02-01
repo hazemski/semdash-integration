@@ -7,7 +7,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './contexts/AuthContext';
 import { CreditsProvider } from './contexts/CreditsContext';
 import { ThemeProvider } from './contexts/ThemeContext';
-import Roadmap from './pages/Roadmap';
+import Roadmap from './pages/Roadmap';  // <-- Correct import path
 
 // Components
 import { ProtectedRoute } from './components/ProtectedRoute';
@@ -82,12 +82,6 @@ import { PPAResults } from './pages/PPA/Results';
 import { Performance } from './pages/Performance';
 import { PerformanceResults } from './pages/Performance/Results';
 
-// Google Search Console
-import { GoogleSearchConsole } from './pages/GoogleSearchConsole';
-import { GoogleSearchConsoleCallback } from './pages/GoogleSearchConsole/Callback';
-import { GoogleSearchConsoleDomains } from './pages/GoogleSearchConsole/Domains';
-import { GoogleSearchConsolePerformance } from './pages/GoogleSearchConsole/Performance';
-
 // Create Query Client
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -122,53 +116,19 @@ export default function App() {
                 <Route path="/" element={<Navigate to="/overview" replace />} />
                 
                 <Route element={<Layout />}>
-                  {/* Settings */}
-                  <Route path="/settings" element={
-                    <ProtectedRoute>
-                      <Settings />
-                    </ProtectedRoute>
-                  } />
-
-                  {/* Subscription */}
-                  <Route path="/subscription" element={
-                    <ProtectedRoute>
-                      <Subscription />
-                    </ProtectedRoute>
-                  } />
-
-                  {/* Google Search Console */}
-                  <Route path="/google-search-console" element={
-                    <ProtectedRoute>
-                      <GoogleSearchConsole />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/google-search-console/callback" element={
-                    <ProtectedRoute>
-                      <GoogleSearchConsoleCallback />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/google-search-console/domains" element={
-                    <ProtectedRoute>
-                      <GoogleSearchConsoleDomains />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/google-search-console/performance/:domain" element={
-                    <ProtectedRoute>
-                      <GoogleSearchConsolePerformance />
-                    </ProtectedRoute>
-                  } />
-
                   {/* Domain Analysis */}
                   <Route path="/overview" element={
                     <ProtectedRoute>
                       <DomainSearch />
                     </ProtectedRoute>
                   } />
-                  <Route path="/roadmap" element={
-                    <ProtectedRoute>
-                      <Roadmap />
-                    </ProtectedRoute>
-                  } />
+<Route path="/roadmap" element={
+  <ProtectedRoute>
+    <Roadmap />
+  </ProtectedRoute>
+} />
+
+
                   <Route path="/overview/results" element={
                     <ProtectedRoute>
                       <DomainOverview />
@@ -328,16 +288,6 @@ export default function App() {
                       <LocalSerpResults />
                     </ProtectedRoute>
                   } />
-                  <Route path="/maps-checker" element={
-                    <ProtectedRoute>
-                      <MapsChecker />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/maps-checker/results" element={
-                    <ProtectedRoute>
-                      <MapsCheckerResults />
-                    </ProtectedRoute>
-                  } />
 
                   {/* Pages Analysis */}
                   <Route path="/pages" element={
@@ -392,15 +342,6 @@ export default function App() {
                       <PPAResults />
                     </ProtectedRoute>
                   } />
-                  <Route
-                    path="/settings"
-                    element={
-                      <ProtectedRoute>
-                        <Settings />
-                      </ProtectedRoute>
-                    }
-                  />
-                </Route>
                   <Route path="/performance" element={
                     <ProtectedRoute>
                       <Performance />
@@ -419,6 +360,23 @@ export default function App() {
                   <Route path="/competitor-analysis/results" element={
                     <ProtectedRoute>
                       <CompetitorAnalysisResults />
+                    </ProtectedRoute>
+                  } />
+<Route path="/maps-checker" element={
+            <ProtectedRoute><MapsChecker /></ProtectedRoute>
+          } />
+          <Route path="/maps-checker/results" element={
+            <ProtectedRoute><MapsCheckerResults /></ProtectedRoute>
+          } />
+                  {/* Account */}
+                  <Route path="/settings" element={
+                    <ProtectedRoute>
+                      <Settings />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/subscription" element={
+                    <ProtectedRoute>
+                      <Subscription />
                     </ProtectedRoute>
                   } />
                 </Route>
