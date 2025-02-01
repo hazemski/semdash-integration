@@ -47,8 +47,7 @@ export function Sidebar() {
     {
       title: 'SERP CHECKER',
       items: [
-        { icon: History, label: 'Historical SERP', path: '/serp-checker' },
-      ]
+        { icon: History, label: 'Historical SERP', path: '/serp-checker' }      ]
     },
     {
       title: 'KEYWORD Research',
