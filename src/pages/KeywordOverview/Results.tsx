@@ -96,7 +96,7 @@ export function KeywordOverviewResults() {
   }, [fetchData, hasInitialLoad]);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen w-full">
       <div className="max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         <div className="space-y-4">
           <h1 className="text-2xl font-bold text-gray-900">
@@ -113,73 +113,71 @@ export function KeywordOverviewResults() {
             title="No keyword data found"
             message="We couldn't find any data for this keyword. This could be because:"
             suggestions={[
-              'The keyword has very low or no search volume',
-              'The keyword is too new or not yet tracked',
+              'The keyword has no search volume',
+              'The keyword is too specific or niche',
               'The keyword was mistyped or does not exist'
             ]}
           />
         ) : (
-          <>
-            <div className="grid grid-cols-3 gap-6">
-              <div className="h-[400px]">
-                <VolumeCard 
-                  volume={overviewData?.mainKeyword.searchVolume}
-                  monthlySearches={overviewData?.mainKeyword.monthlySearches}
-                  intent={overviewData?.mainKeyword.intent}
-                />
-              </div>
-              <div className="h-[400px]">
-                <DifficultyCard 
-                  difficulty={overviewData?.mainKeyword.keywordDifficulty}
-                  referringDomains={overviewData?.mainKeyword.referringDomains}
-                  backlinks={overviewData?.mainKeyword.backlinks}
-                  mainDomainRanking={overviewData?.mainKeyword.mainDomainRanking}
-                />
-              </div>
-              <div className="h-[400px]">
-                <RelatedKeywordsCard keywords={overviewData?.relatedKeywords} />
-              </div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 w-full">
+            <div className="h-[400px]">
+              <VolumeCard 
+                volume={overviewData?.mainKeyword.searchVolume}
+                monthlySearches={overviewData?.mainKeyword.monthlySearches}
+                intent={overviewData?.mainKeyword.intent}
+              />
             </div>
-
-            <div className="mt-8 bg-gray-50 py-8">
-              <div className="max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="relative">
-                  <h2 className="text-xl font-bold text-gray-900 mb-4">
-                    SERP History
-                  </h2>
-
-                  <button
-                    onClick={() => handleScroll('left')}
-                    className="absolute -left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white/90 p-2 rounded-full shadow-lg hover:bg-gray-100"
-                    aria-label="Scroll left"
-                  >
-                    <ChevronLeft className="w-6 h-6" />
-                  </button>
-
-                  <button
-                    onClick={() => handleScroll('right')}
-                    className="absolute -right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white/90 p-2 rounded-full shadow-lg hover:bg-gray-100"
-                    aria-label="Scroll right"
-                  >
-                    <ChevronRight className="w-6 h-6" />
-                  </button>
-
-                  <div 
-                    id="serp-tables-container"
-                    className="overflow-x-auto hide-scrollbar"
-                    style={{ scrollBehavior: 'smooth' }}
-                  >
-                    <HistoricalTable 
-                      data={serpData}
-                      isLoading={false}
-                      error={null}
-                    />
-                  </div>
-                </div>
-              </div>
+            <div className="h-[400px]">
+              <DifficultyCard 
+                difficulty={overviewData?.mainKeyword.keywordDifficulty}
+                referringDomains={overviewData?.mainKeyword.referringDomains}
+                backlinks={overviewData?.mainKeyword.backlinks}
+                mainDomainRanking={overviewData?.mainKeyword.mainDomainRanking}
+              />
             </div>
-          </>
+            <div className="h-[400px]">
+              <RelatedKeywordsCard keywords={overviewData?.relatedKeywords} />
+            </div>
+          </div>
         )}
+
+        <div className="mt-8 bg-gray-50 dark:bg-gray-900 w-full overflow-hidden">
+          <div className="w-full py-8">
+            <div className="relative">
+              <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4 px-4">
+                SERP History
+              </h2>
+
+              <button
+                onClick={() => handleScroll('left')}
+                className="absolute -left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white/90 dark:bg-gray-800/90 p-2 rounded-full shadow-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+                aria-label="Scroll left"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+
+              <button
+                onClick={() => handleScroll('right')}
+                className="absolute -right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white/90 dark:bg-gray-800/90 p-2 rounded-full shadow-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+                aria-label="Scroll right"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
+
+              <div 
+                id="serp-tables-container"
+                className="overflow-x-auto hide-scrollbar w-full"
+                style={{ scrollBehavior: 'smooth' }}
+              >
+                <HistoricalTable 
+                  data={serpData}
+                  isLoading={false}
+                  error={null}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
