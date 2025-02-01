@@ -40,6 +40,18 @@ export function VolumeCard({ volume, monthlySearches = [], intent }: VolumeCardP
     }
     return null;
   };
+  if (!volume && !monthlySearches) {
+    return (
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow h-full animate-pulse">
+        <div className="p-6">
+          <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
+          <div className="mt-4 h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
+          <div className="mt-2 h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/4"></div>
+        </div>
+        <div className="p-6 h-48 bg-gray-100 dark:bg-gray-700/50 rounded-b-lg"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white rounded-lg shadow h-full flex flex-col">
