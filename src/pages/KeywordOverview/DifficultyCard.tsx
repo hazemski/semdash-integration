@@ -19,13 +19,30 @@ export function DifficultyCard({
     difficulty <= 25 ? 'Easy' :
     difficulty <= 50 ? 'Moderate' :
     difficulty <= 75 ? 'Hard' : 'Super hard';
+  if (difficulty === undefined || difficulty === null) {
+    return (
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow h-full animate-pulse">
+        <div className="p-6">
+          <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
+        </div>
+        <div className="p-6 flex flex-col items-center space-y-4">
+          <div className="w-32 h-32 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
+          <div className="space-y-2 w-full">
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded"></div>
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded"></div>
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white rounded-lg shadow h-full flex flex-col">
       <div className="p-6 flex-none">
         <h3 className="text-lg font-semibold text-gray-900">Keyword Difficulty</h3>
       </div>
-
       <div className="flex-1 min-h-0 p-6 pt-0 flex flex-col justify-between">
         <div className="relative flex justify-center">
           <div className="relative">
@@ -42,8 +59,8 @@ export function DifficultyCard({
               <circle
                 className="text-blue-600"
                 strokeWidth="12"
-                strokeDasharray={360}
-                strokeDashoffset={360 - (360 * difficulty) / 100}
+                strokeDasharray="360"
+                strokeDashoffset={`${360 - (360 * difficulty) / 100}`}
                 strokeLinecap="round"
                 stroke={getDifficultyColor(difficulty)}
                 fill="transparent"
@@ -58,7 +75,7 @@ export function DifficultyCard({
               />
             </svg>
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-              <div className="text-3xl font-bold">{Math.round(difficulty)}</div>
+              <div className="text-3xl font-bold">{Math.round(difficulty || 0)}</div>
               <div className="text-sm text-gray-500">out of 100</div>
             </div>
           </div>
@@ -72,13 +89,13 @@ export function DifficultyCard({
 
         <div className="mt-6 space-y-2 text-sm text-gray-600">
           <div className="flex justify-between">
-            <span>~{formatNumber(referringDomains)} ref.domains to rank in top 10</span>
+            <span>~{formatNumber(referringDomains || 0)} ref.domains to rank in top 10</span>
           </div>
           <div className="flex justify-between">
-            <span>~{formatNumber(backlinks)} backlinks to rank in top 10</span>
+            <span>~{formatNumber(backlinks || 0)} backlinks to rank in top 10</span>
           </div>
           <div className="flex justify-between">
-            <span>~{formatNumber(mainDomainRanking)} main domain ranking to rank in top 10</span>
+            <span>~{formatNumber(mainDomainRanking || 0)} main domain ranking to rank in top 10</span>
           </div>
         </div>
       </div>
