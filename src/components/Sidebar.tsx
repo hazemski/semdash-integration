@@ -48,7 +48,6 @@ export function Sidebar() {
       title: 'SERP CHECKER',
       items: [
         { icon: History, label: 'Historical SERP', path: '/serp-checker' },
-        { icon: MapPin, label: 'Local SERP', path: '/local-serp' }
       ]
     },
     {
