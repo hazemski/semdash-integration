@@ -22,6 +22,11 @@ import { ResetPassword } from './pages/ResetPassword';
 import { Settings } from './pages/Settings';
 import { InviteAccept } from './pages/InviteAccept';
 import { Subscription } from './pages/Subscription';
+// Google Search Console
+import { GoogleSearchConsole } from './pages/GoogleSearchConsole';
+import { GoogleSearchConsoleCallback } from './pages/GoogleSearchConsole/Callback';
+import { GoogleSearchConsoleDomains } from './pages/GoogleSearchConsole/Domains';
+import { GoogleSearchConsolePerformance } from './pages/GoogleSearchConsole/Performance';
 
 // Domain Analysis
 import { DomainSearch } from './pages/DomainSearch';
@@ -251,7 +256,27 @@ export default function App() {
                       <TopicalMapResults />
                     </ProtectedRoute>
                   } />
-
+{/* Google Search Console */}
+                  <Route path="/google-search-console" element={
+                    <ProtectedRoute>
+                      <GoogleSearchConsole />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/google-search-console/callback" element={
+                    <ProtectedRoute>
+                      <GoogleSearchConsoleCallback />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/google-search-console/domains" element={
+                    <ProtectedRoute>
+                      <GoogleSearchConsoleDomains />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/google-search-console/performance/:domain" element={
+                    <ProtectedRoute>
+                      <GoogleSearchConsolePerformance />
+                    </ProtectedRoute>
+                  } />
                   {/* SERP Analysis */}
                   <Route path="/serp" element={
                     <ProtectedRoute>
