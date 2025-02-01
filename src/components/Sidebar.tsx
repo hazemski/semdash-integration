@@ -71,10 +71,9 @@ export function Sidebar() {
       ]
     },
     {
-      title: 'AI SEO Tools',
+      title: 'SEO Integrations',
       items: [
         { icon: Boxes, label: 'Keyword Clustering', path: '/keyword-clustering' },
-        { icon: Map, label: 'Topical Map', path: '/topical-map' },
         { 
           icon: BarChart2, 
           label: 'Search Console', 
