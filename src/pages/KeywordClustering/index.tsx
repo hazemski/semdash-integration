@@ -1,13 +1,52 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 import { KeywordInput } from '../../components/clustering/KeywordInput';
 import { ClusteringTypeSelect } from '../../components/clustering/ClusteringTypeSelect';
+import { ApiKeyDialog } from '../../components/domain/copilot/ApiKeyDialog';
+import { getUserSettings, updateOpenAIKey } from '../../services/settings';
 import type { ClusteringType } from '../../services/keywordClustering';
 
 export function KeywordClustering() {
   const navigate = useNavigate();
-  const [keywords, setKeywords] = React.useState('');
-  const [type, setType] = React.useState<ClusteringType>('semantic');
+  const [keywords, setKeywords] = useState('');
+  const [type, setType] = useState<ClusteringType>('semantic');
+  const [showApiKeyDialog, setShowApiKeyDialog] = useState(false);
+  const [apiKey, setApiKey] = useState('');
+  const [hasApiKey, setHasApiKey] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    checkApiKey();
+  }, []);
+
+  const checkApiKey = async () => {
+    try {
+      const settings = await getUserSettings();
+      setHasApiKey(!!settings?.openai_api_key);
+    } catch (error) {
+      console.error('Error checking API key:', error);
+    }
+  };
+
+  const handleSaveApiKey = async () => {
+    if (!apiKey.startsWith('sk-')) {
+      toast.error('Invalid API key format. It should start with "sk-"');
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      await updateOpenAIKey(apiKey);
+      setHasApiKey(true);
+      setShowApiKeyDialog(false);
+      toast.success('API key saved successfully');
+    } catch (error) {
+      toast.error('Failed to save API key');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,6 +57,11 @@ export function KeywordClustering() {
       .filter(Boolean);
 
     if (keywordList.length === 0) return;
+
+    if (!hasApiKey) {
+      setShowApiKeyDialog(true);
+      return;
+    }
 
     const searchParams = new URLSearchParams({
       keywords: JSON.stringify(keywordList),
@@ -64,6 +108,15 @@ export function KeywordClustering() {
           </button>
         </form>
       </div>
+
+      {showApiKeyDialog && (
+        <ApiKeyDialog
+          apiKey={apiKey}
+          onApiKeyChange={setApiKey}
+          onSave={handleSaveApiKey}
+          onClose={() => setShowApiKeyDialog(false)}
+        />
+      )}
     </div>
   );
 }
