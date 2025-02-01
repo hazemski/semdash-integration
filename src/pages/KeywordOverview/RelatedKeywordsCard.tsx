@@ -32,6 +32,23 @@ export function RelatedKeywordsCard({ keywords = [] }: RelatedKeywordsCardProps)
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+  if (!keywords) {
+    return (
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow h-full animate-pulse">
+        <div className="p-6">
+          <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
+        </div>
+        <div className="p-6 space-y-4">
+          {[...Array(5)].map((_, i) => (
+            <div key={i} className="space-y-2">
+              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white rounded-lg shadow h-full flex flex-col">
