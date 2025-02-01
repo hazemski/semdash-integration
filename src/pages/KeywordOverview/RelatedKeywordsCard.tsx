@@ -56,34 +56,34 @@ export function RelatedKeywordsCard({ keywords = [] }: RelatedKeywordsCardProps)
         <h3 className="text-lg font-semibold text-gray-900">Related Keywords</h3>
       </div>
 
-      <div className="flex-1 min-h-0 overflow-hidden">
+      <div className="flex-1 min-h-0 overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
                 Keyword
               </th>
-              <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
                 Intent
               </th>
-              <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
                 KD
               </th>
-              <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
                 Volume
               </th>
-              <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
                 CPC (USD)
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="bg-white divide-y divide-gray-200 whitespace-nowrap">
             {currentKeywords.map((keyword, index) => (
               <tr key={index} className="hover:bg-gray-50">
-                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">
+                <td className="px-4 py-2 text-sm text-gray-900 min-w-[200px]">
                   {keyword.keyword}
                 </td>
-                <td className="px-4 py-2 whitespace-nowrap text-sm">
+                <td className="px-4 py-2 text-sm min-w-[100px]">
                   <span className="px-2 py-1 text-xs font-medium rounded-lg capitalize" style={{
                     backgroundColor: keyword.intent === 'informational' ? '#EBF5FF' :
                                    keyword.intent === 'commercial' ? '#F3E8FF' :
@@ -97,7 +97,7 @@ export function RelatedKeywordsCard({ keywords = [] }: RelatedKeywordsCardProps)
                     {keyword.intent.charAt(0)}
                   </span>
                 </td>
-                <td className="px-4 py-2 whitespace-nowrap text-sm">
+                <td className="px-4 py-2 text-sm min-w-[100px]">
                   <div className="flex items-center space-x-2">
                     <span>{Math.round(keyword.keywordDifficulty)}</span>
                     <div 
@@ -106,10 +106,10 @@ export function RelatedKeywordsCard({ keywords = [] }: RelatedKeywordsCardProps)
                     ></div>
                   </div>
                 </td>
-                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">
+                <td className="px-4 py-2 text-sm text-gray-900 min-w-[100px]">
                   {formatNumber(keyword.searchVolume)}
                 </td>
-                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">
+                <td className="px-4 py-2 text-sm text-gray-900 min-w-[100px]">
                   {formatCurrency(keyword.cpc)}
                 </td>
               </tr>
