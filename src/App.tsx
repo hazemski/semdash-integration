@@ -368,6 +368,15 @@ export default function App() {
                       <PPAResults />
                     </ProtectedRoute>
                   } />
+                  <Route
+                    path="/settings"
+                    element={
+                      <ProtectedRoute>
+                        <Settings />
+                      </ProtectedRoute>
+                    }
+                  />
+                </Route>
                   <Route path="/performance" element={
                     <ProtectedRoute>
                       <Performance />
