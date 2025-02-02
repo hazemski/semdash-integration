@@ -87,7 +87,7 @@ export function GoogleSearchConsole() {
             className="flex items-center gap-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 px-4 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600"
           >
             <img 
-              src="/lovable-uploads/50061d9a-1a0d-4ef3-8245-f5298e13ea1c.png" 
+              src="/google-search-console-n9ENg2vw2Z8VNdkgD7tJQeyW2BDJhJ.svg" 
               alt="Google logo" 
               className="w-6 h-6"
             />
