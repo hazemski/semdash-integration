@@ -37,7 +37,7 @@ export function TrafficShareTable({
   const totalPages = Math.ceil(totalCount / itemsPerPage);
 
   // Calculate total ETV for percentage calculations (only for single mode)
-  const totalEtv = !isBulkMode ? data.reduce((sum, item) => sum + item.etv, 0) : 0;
+  const totalEtv = !isBulkMode && data?.length ? data.reduce((sum, item) => sum + (item.etv || 0), 0) : 0;
 
   const handleExport = () => {
     if (!data.length) return;
@@ -88,6 +88,13 @@ export function TrafficShareTable({
     );
   }
 
+  if (!data || data.length === 0) {
+    return (
+      <div className="bg-white p-6 rounded-lg shadow">
+        <p className="text-center text-gray-500">No traffic share data available</p>
+      </div>
+    );
+  }
   if (error) {
     return (
       <div className="bg-white p-6 rounded-lg shadow">
