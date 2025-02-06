@@ -98,7 +98,7 @@ export function Sidebar() {
             className="cursor-pointer"
           >
             <img 
-              src="https://famyayvemq6ogs8n.public.blob.vercel-storage.com/New-Project-5-nc091JvjtG7ETkgteLhGD743OtI1JN.png" 
+              src="https://famyayvemq6ogs8n.public.blob.vercel-storage.com/semdash%20logo%20(8)%20(1)-9MfsTyaLcVJIl8C8vzawVoVckathnc.png" 
               alt="Semdash Logo" 
               className="h-8 dark:invert"
             />
