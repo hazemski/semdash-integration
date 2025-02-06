@@ -36,7 +36,7 @@ export async function fetchKeywordOverview(
   try {
     // First API call - Related Keywords
     const relatedPayload = [{
-      keyword,
+      keyword: keyword.trim(),
       location_code: parseInt(locationCode),
       language_code: languageCode,
       depth: 2,
@@ -59,10 +59,16 @@ export async function fetchKeywordOverview(
     console.log('Related keywords API response:', relatedResponse.data);
 
     if (!relatedResponse.data?.tasks?.[0]?.result?.[0]) {
-      throw new Error('No data received from related keywords API');
+      throw new Error('No data found for this keyword');
     }
 
     const result = relatedResponse.data.tasks[0].result[0];
+    
+    // If no data found, throw error
+    if (!result.seed_keyword_data) {
+      throw new Error('No data found for this keyword');
+    }
+    
     const seedData = result.seed_keyword_data;
 
     if (!seedData) {
@@ -104,7 +110,7 @@ export async function fetchKeywordSerps(
 ) {
   try {
     const payload = [{
-      keyword,
+      keyword: keyword.trim(),
       location_code: parseInt(locationCode),
       language_code: languageCode
     }];
@@ -119,7 +125,7 @@ export async function fetchKeywordSerps(
     console.log('SERP history API response:', response.data);
 
     if (!response.data?.tasks?.[0]?.result?.[0]?.items) {
-      throw new Error('No SERP history data available');
+      return []; // Return empty array instead of throwing error
     }
 
     // Sort items by date in ascending order
