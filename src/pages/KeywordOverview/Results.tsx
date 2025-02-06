@@ -15,8 +15,10 @@ export function KeywordOverviewResults() {
   const [searchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [overviewData, setOverviewData] = useState<any>(null);
+  const [data, setData] = useState<KeywordOverviewData | null>(null);
   const [serpData, setSerpData] = useState<any[]>([]);
+  const [serpError, setSerpError] = useState<string | null>(null);
+  const [isLoadingSERP, setIsLoadingSERP] = useState(false);
   const [hasInitialLoad, setHasInitialLoad] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(0);
   const { checkCredits, deductUserCredits } = useCredits();
@@ -26,6 +28,7 @@ export function KeywordOverviewResults() {
     location: searchParams.get('location') || '',
     language: searchParams.get('language') || ''
   };
+
 
   const locationName = locations.find(loc => 
     loc.code === currentParams.location
@@ -46,54 +49,63 @@ export function KeywordOverviewResults() {
       setScrollPosition(newPosition);
     }
   };
-
-  const fetchData = useCallback(async () => {
-    if (!currentParams.keyword) {
-      return;
-    }
-
-    const hasCredits = await checkCredits(15);
-    if (!hasCredits) return;
-
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const [overviewResult, serpResult] = await Promise.all([
-        fetchKeywordOverview(
-          currentParams.keyword,
-          currentParams.location,
-          currentParams.language
-        ),
-        fetchKeywordSerps(
-          currentParams.keyword,
-          currentParams.location,
-          currentParams.language
-        )
-      ]);
-
-      setOverviewData(overviewResult);
-      setSerpData(serpResult);
-
-      const deducted = await deductUserCredits(15, 'Keyword Overview');
-      if (!deducted) {
-        throw new Error('Failed to process credits');
-      }
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to fetch keyword data';
-      setError(errorMessage);
-      toast.error(errorMessage);
-    } finally {
-      setIsLoading(false);
-      setHasInitialLoad(true);
-    }
-  }, [currentParams.keyword, currentParams.location, currentParams.language, checkCredits, deductUserCredits]);
-
   useEffect(() => {
-    if (!hasInitialLoad) {
-      fetchData();
-    }
-  }, [fetchData, hasInitialLoad]);
+    const fetchData = async () => {
+      if (!currentParams.keyword || !currentParams.location || !currentParams.language) {
+        return;
+      }
+
+      // Reset state for new search
+      setData(null);
+      setError(null);
+      setSerpData([]);
+      setSerpError(null);
+      setHasInitialLoad(false);
+
+      const hasCredits = await checkCredits(30);
+      if (!hasCredits) return;
+      
+      setIsLoading(true);
+      setIsLoadingSERP(true);
+      setError(null);
+      setSerpError(null);
+
+      try {
+        // Fetch both overview and SERP data in parallel
+        const [overviewResult, serpResult] = await Promise.all([
+          fetchKeywordOverview(
+            currentParams.keyword,
+            currentParams.location,
+            currentParams.language
+          ),
+          fetchKeywordSerps(
+          currentParams.keyword,
+          currentParams.location,
+          currentParams.language
+          )
+        ]);
+
+        const deducted = await deductUserCredits(30, 'Keyword Overview');
+        if (!deducted) {
+          throw new Error('Failed to process credits');
+        }
+
+        setData(overviewResult);
+        setSerpData(serpResult);
+      } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : 'Failed to fetch data';
+        setError(errorMessage);
+        setSerpError(errorMessage);
+        toast.error(errorMessage);
+      } finally {
+        setIsLoading(false);
+        setIsLoadingSERP(false);
+        setHasInitialLoad(true);
+      }
+    };
+
+    fetchData();
+  }, [currentParams.keyword, currentParams.location, currentParams.language]); // Watch URL params directly
 
   return (
     <div className="min-h-screen w-full">
@@ -122,21 +134,21 @@ export function KeywordOverviewResults() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 w-full">
             <div className="h-[400px]">
               <VolumeCard 
-                volume={overviewData?.mainKeyword.searchVolume}
-                monthlySearches={overviewData?.mainKeyword.monthlySearches}
-                intent={overviewData?.mainKeyword.intent}
+                volume={data?.mainKeyword.searchVolume}
+                monthlySearches={data?.mainKeyword.monthlySearches}
+                intent={data?.mainKeyword.intent}
               />
             </div>
             <div className="h-[400px]">
               <DifficultyCard 
-                difficulty={overviewData?.mainKeyword.keywordDifficulty}
-                referringDomains={overviewData?.mainKeyword.referringDomains}
-                backlinks={overviewData?.mainKeyword.backlinks}
-                mainDomainRanking={overviewData?.mainKeyword.mainDomainRanking}
+                difficulty={data?.mainKeyword.keywordDifficulty}
+                referringDomains={data?.mainKeyword.referringDomains}
+                backlinks={data?.mainKeyword.backlinks}
+                mainDomainRanking={data?.mainKeyword.mainDomainRanking}
               />
             </div>
             <div className="h-[400px]">
-              <RelatedKeywordsCard keywords={overviewData?.relatedKeywords} />
+              <RelatedKeywordsCard keywords={data?.relatedKeywords} />
             </div>
           </div>
         )}
@@ -171,8 +183,8 @@ export function KeywordOverviewResults() {
               >
                 <HistoricalTable 
                   data={serpData}
-                  isLoading={false}
-                  error={null}
+                  isLoading={isLoadingSERP}
+                  error={serpError}
                 />
               </div>
             </div>
